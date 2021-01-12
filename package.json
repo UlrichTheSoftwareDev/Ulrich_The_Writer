@@ -1,0 +1,23 @@
+{
+  "name": "ulrich_the_writer",
+  "version": "1.0.0",
+  "description": "Ulrich The Keeper is a flexible text editor and lightweight hybrid IDE ",
+  "main": "./src/server/main.js",
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "start": "electron . --no-sandbox"
+  },
+  "author": "",
+  "license": "Apache2",
+  "devDependencies": {
+    "electron": "^10.1.4",
+    "electron-builder": "^22.9.1",
+    "electron-packager": "^15.1.0"
+  },
+  "dependencies": {
+    "codemirror": "^5.59.1",
+    "electron-tree-view": "^1.1.0",
+    "glob": "^7.1.6",
+    "jquery": "^3.5.1"
+  }
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ulrich The Keeper</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap-4.3.1.min.css">
+  <link rel="stylesheet" href="../assets/css/font-awesome-4.7.0.min.css">
+  <link rel="stylesheet" href="../assets/css/main_style.css">
+
+
+  <link rel="stylesheet" href="../assets/js_external_source/codemirror-5.59.1/lib/codemirror.css">
+  <link rel="stylesheet" href="../assets/js_external_source/codemirror-5.59.1/theme/cobalt.css">
+  <link rel="stylesheet" href="../assets/js_external_source/codemirror-5.59.1/addon/hint/show-hint.css">
+
+</head>
+
+<body>
+  <!-- Vertical navbar -->
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center"><img src="../assets/img/app_png.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        <div class="media-body">
+          <h4 class="m-0">Ulrich</h4>
+          <p class="font-weight-light text-muted mb-0">The Writer</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">File system</p>
+
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="#" onclick=search_password() class="nav-link text-dark font-italic bg-light">
+          <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+          Search
+        </a>
+
+      </li>
+      <div id="tree_view"></div>
+      <div id="separator"></div>
+
+
+    </ul>
+
+  </div>
+  <!-- End vertical navbar -->
+
+
+  <!-- Page content holder -->
+  <div class="page-content p-5" id="content">
+    <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+
+    <!-- Demo content -->
+    <h2 class="display-4 text-white">Text editor</h2>
+
+
+
+    <div id="text_editor"></div>
+    <button id="save">Save sample.txt to local System</button>
+        <input type="file" onchange="localLoad(this.files);" />
+
+  </div>
+
+
+  <script src="../assets/js_external_source/jquery-3.3.1.slim.min.js"></script>
+  <script src="../assets/js_external_source/bootstrap-4.3.1.bundle.min.js"></script>
+  <script src="../assets/js_external_source/jquery-3.5.1.min.js"></script>
+
+  <script src="../assets/js_external_source/codemirror-5.59.1/lib/codemirror.js"></script>
+  <script src="../assets/js_external_source/codemirror-5.59.1/mode/javascript/javascript.js"></script>
+  <script src="../assets/js_external_source/codemirror-5.59.1/addon/fold/foldcode.js"></script>
+  <script src="../assets/js_external_source/codemirror-5.59.1/addon/hint/show-hint.js"></script>
+  <script src="../assets/js_external_source/codemirror-5.59.1/addon/hint/javascript-hint.js"></script>
+
+
+  <script  src="../../mvc/controller/main.js"></script>
+
+  <script>
+    // document.getElementById("myBtn_insert").addEventListener("click", submit_insert_password);
+
+
+    const root = {
+      name: 'foo',
+      children: [{
+        name: 'bar',
+        children: [{
+          name: 'bar',
+          children: []
+        }, {
+          name: 'baz',
+          children: []
+        }]
+      }]
+    }
+
+    const tree = require('electron-tree-view')({
+      root,
+      container: document.getElementById('separator'),
+      children: c => c.children,
+      label: c => c.name
+    })
+
+    tree.on('selected', item => {
+      // adding a new children to every selected item
+      item.children.push({ name: 'foo', children: [] })
+
+      tree.loop.update({ root })
+
+      console.log('item selected')
+    })
+
+    var glob = require('glob');
+
+    glob("/home/sacha/src/**", function (er, files) {
+      // files is an array of filenames.
+      // If the `nonull` option is set, and nothing
+      // was found, then files is ["**/*.js"]
+      // er is an error object or null.
+      // alert(files)
+    })
+
+
+    var myCodeMirror = CodeMirror(document.getElementById('text_editor'), {
+    value: "To be continued ...\n",
+    mode:  "javascript",
+    lineNumbers: true,
+    theme: "cobalt",
+    extraKeys: {"Ctrl-Space" : "autocomplete"}
+
+  });
+  // myCodeMirror.setSize("650,650")
+  document.getElementById("save").addEventListener("click", tata);
+
+  function tata(){
+    // alert(myCodeMirror.getValue())
+
+  }
+
+  function localLoad(files) {
+      if (files.length == 1) {
+           document.title = escape(files[0].name);
+           var reader = new FileReader();
+           reader.onload = function(e) {
+             myCodeMirror.setValue(e.target.result);
+           };
+           reader.readAsText(files[0]);
+        }
+   }
+
+  </script>
+
+</body>
+
+</html>
+<!-- End demo content -->
