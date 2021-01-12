@@ -150,6 +150,22 @@
         }
    }
 
+var fs = require('fs');
+const path = require('path');
+
+   function getAllFiles(dirPath){
+      fs.readdirSync(dirPath).forEach(function(file) {
+      let filepath = path.join(dirPath , file);
+      let stat= fs.statSync(filepath);
+      if (stat.isDirectory()) {
+        getAllFiles(filepath);
+      } else {
+            console.info(filepath+ '\n');
+      }
+  });
+}
+getAllFiles('/opt');
+
   </script>
 
 </body>
